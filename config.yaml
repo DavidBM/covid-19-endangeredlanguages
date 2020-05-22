@@ -1,0 +1,26 @@
+baseURL: "http://example.org/"
+languageCode: "en-us"
+title: "COVID-19 information for endangered languages"
+
+disableKinds:
+  - taxonomy
+  - taxonomyTerm
+
+module:
+  mounts:
+    - source: "static"
+      target: "static"
+    - source: "assets"
+      target: "assets"
+    - source: "node_modules/bootstrap/scss"
+      target: "assets/scss/vendor/bootstrap"
+    - source: "node_modules/jquery/dist/jquery.js"
+      target: "assets/js/vendor/jquery.js"
+    - source: "node_modules/popper.js/dist/umd/popper.js"
+      target: "assets/js/vendor/popper.js"
+    - source: "node_modules/bootstrap/dist/js/bootstrap.js"
+      target: "assets/js/vendor/bootstrap.js"
+    - source: "node_modules/@fortawesome/fontawesome-free/scss"
+      target: "assets/scss/vendor/fontawesome"
+    - source: "node_modules/@fortawesome/fontawesome-free/webfonts"
+      target: "static/webfonts"

@@ -1,0 +1,7 @@
+@import "custom_variables";
+// Bootstrap scss folder is mounted in config.yaml
+@import "vendor/bootstrap/bootstrap";
+@import "vendor/fontawesome/fontawesome";
+@import "vendor/fontawesome/solid";
+@import "vendor/fontawesome/brands";
+@import "styles.scss";

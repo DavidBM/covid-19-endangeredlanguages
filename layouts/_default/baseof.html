@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="favicon.ico">
+
+	<title>COVID-19 information for endangered languages</title>
+
+	<link rel="canonical" href="https://getbootstrap.com/">
+
+	{{ $options := (dict "targetPath" "/css/style.css" "outputStyle" "compressed" "enableSourceMap" true "includePaths" (slice "/node_modules/bootstrap")) }}
+	{{ $style := resources.Get "/scss/main.scss" | toCSS $options | minify | fingerprint }}
+	<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+{{ partial "header/header.html" . }}
+
+{{ block "main" . }}
+{{ end }}
+
+{{ partial "footer/footer.html" . }}
+
+
+{{ $jquery := resources.Get "js/vendor/jquery.js" }}
+{{ $popper := resources.Get "js/vendor/popper.js" }}
+{{ $bootstrap := resources.Get "js/vendor/bootstrap.js" }}
+{{ $vendor := slice $jquery $popper $bootstrap | resources.Concat "js/vendor.js" | resources.Minify | resources.Fingerprint }}
+<script src="{{ $vendor.Permalink }}" integrity="{{ $vendor.Data.Integrity }}"></script>
+{{ $main := resources.Get "js/main.js" | resources.Minify | resources.Fingerprint }}
+<script src="{{ $main.Permalink }}" integrity="{{ $main.Data.Integrity }}"></script>
+</body>
+</html>

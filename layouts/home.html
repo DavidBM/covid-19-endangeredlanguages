@@ -1,0 +1,63 @@
+{{ define "main" }}
+<main>
+	<div class="container-xl">
+		<div class="row pt-10">
+			<div class="col-12 col-md-9 input-group mx-auto">
+				<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#search-options">More Options</button>
+					<button class="btn btn-outline-secondary" type="button">Search</button>
+				</div>
+			</div>
+			<div id="search-options" class="collapse col-11 col-lg-8 col-xl-5 input-group mx-auto">
+				Hola
+			</div>
+		</div>
+	</div>
+	<div class="container-xl">
+		<div class="py-5 px-2">
+		<div> {{/* When we have a new language card, we add a closing div for the previos one. FOr the first one, we add this empty div in order to not break the html */}}
+		{{ $lastLang := "" }}
+		{{ $csv := getCSV "," "static/ELP-COVID.csv"}}
+
+		{{ $global := newScratch }}
+		{{ $global.Set "langs" dict }}
+
+		{{/*This transform the CSV with many rows per language to a dict with an slice of rows for each language name as key. It is a bit hacky, but it works for now*/}}
+
+		{{ range $i, $data := $csv }}
+			{{ if gt $i 0 }}
+				{{ $langName := index $data 0 }}
+
+				{{ if isset ($global.Get "langs") $langName }}
+					{{ $all_langs := $global.Get "langs" }}
+					{{ $lang_set := index $all_langs $langName }}
+					{{ $lang_set := $lang_set | append slice $data }} {{/* this extra "slice" is a hack because the merge from the next line is merging the data wierdly. This method created empty arrays, but they are easy to filter later */}}
+					{{ $all_langs := merge $all_langs (dict $langName $lang_set) }}
+					{{ $global.Set "langs" $all_langs }}
+				{{ else }}
+					{{ $all_langs := $global.Get "langs" }}
+					{{ $all_langs := merge $all_langs (dict $langName (slice $data)) }}
+					{{ $global.Set "langs" $all_langs }}
+				{{ end }}	
+			{{ end }}	
+		{{ end }}
+
+
+		{{ range $langName, $langs := ($global.Get "langs") }}
+			<div class="row pb-2">
+				<div class="col-12">
+					<h1>{{ $langName }}</h1>
+				</div>
+				{{ range $i, $langdata := $langs }}
+					{{ if ne (len $langdata) 0 }}
+					<div class="card col-12 col-sm-6 col-md-4 col-lg-3">
+						<p>{{ index $langdata 4 }}</p>
+					</div>
+					{{ end }}
+				{{ end }}
+			</div>
+		{{ end }}
+	</div>
+</main>
+{{ end }}

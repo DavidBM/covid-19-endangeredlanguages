@@ -1,0 +1,10 @@
+// Configure spacer
+$spacer: 1rem;
+$spacers: (
+	6: ($spacer * 5),
+	7: ($spacer * 7),
+	8: ($spacer * 8),
+	9: ($spacer * 9),
+	10: ($spacer * 10),
+)
+
