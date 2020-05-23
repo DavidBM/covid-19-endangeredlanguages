@@ -16,19 +16,14 @@
 		step: function(row) {
 			var langName = row.data[0].trim();
 			var langId = Base64.encode(row.data[0].trim());
+
 			if(LANG_BLOCKS[langId]) {
 				LANG_BLOCKS[langId].data = row.data;
-				TERMS[langName] = langId;
 				
-				row.data[1].split(",").forEach(function (term) {
-					term = term.trim();
-					if(!term) return;
-					TERMS[term] = langId;
-				});
-
-				var countryAndRegion = row.data[2] + " > " + row.data[3];
-
-				TERMS[countryAndRegion] = langId;
+				var searchTerm = [langName, row.data[1].trim(), row.data[2].trim()]
+				.filter(function (item) { return !!item }).join(" | ");
+				
+				TERMS[searchTerm] = langId;
 			}
 		},
 		complete: function() {
