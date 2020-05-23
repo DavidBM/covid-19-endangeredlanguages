@@ -11,7 +11,7 @@
 		LANG_BLOCKS[this.dataset.langId] = {element: this, data: null, id: this.dataset.langId}; 
 	});
 
-	Papa.parse("https://davidbm.github.io/covid-19-endangeredlanguages/ELP-COVID.csv", {
+	Papa.parse("/covid-19-endangeredlanguages/ELP-COVID.csv", {
 		download: true,
 		step: function(row) {
 			var langName = row.data[0].trim();
@@ -36,22 +36,39 @@
 			window.location.hash = "#" + item.value;
 		}
 
-		console.log(terms);
+		var searchInput = $("#main-search");
 
-		$("#main-search").autocomplete({
+		searchInput.autocomplete({
 			source: terms,
 			treshold: 1,
 			maximumItems: 30,
 			onSelectItem: onSelectItem,
-			highlightClass: 'text-danger'
+			highlightClass: 'text-danger',
+			dropdownOptions: {
+				flip: false,
+			}
 		});
+	
+		$("#search-button").click(function () {
+			setTimeout(function () { 
+				searchInput.focus(); 
+				searchInput.click();
+				setTimeout(function () {
+					$("#search-box .dropdown-menu.show .dropdown-item").first().click();
+				}, 0)
+			}, 0);
+		})
 	}
 
 	$("#main-search").click(function() {
 		if(window.innerWidth < 768 && (window.pageYOffset || document.documentElement.scrollTop) === 0) {
 			window.location.hash = "#search-box";
 		}
-	})
-
-
+	}).keypress(function(e) {
+	    if(e.which == 13) {
+			setTimeout(function () {
+				$("#search-box .dropdown-menu.show .dropdown-item").first().click();
+			}, 0)
+	    }
+	});
 })()
