@@ -11,8 +11,7 @@
 		LANG_BLOCKS[this.dataset.langId] = {element: this, data: null, id: this.dataset.langId}; 
 	});
 
-
-	Papa.parse("/ELP-COVID.csv", {
+	Papa.parse("https://davidbm.github.io/covid-19-endangeredlanguages/ELP-COVID.csv", {
 		download: true,
 		step: function(row) {
 			var langName = row.data[0].trim();
