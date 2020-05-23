@@ -33,8 +33,13 @@
 {{ $jquery := resources.Get "js/vendor/jquery.js" }}
 {{ $popper := resources.Get "js/vendor/popper.js" }}
 {{ $bootstrap := resources.Get "js/vendor/bootstrap.js" }}
-{{ $vendor := slice $jquery $popper $bootstrap | resources.Concat "js/vendor.js" | resources.Minify | resources.Fingerprint }}
+{{ $papaparse := resources.Get "js/vendor/papaparse.js" }}
+{{ $base64 := resources.Get "js/vendor/base64.js" }}
+{{ $vendor := slice $jquery $popper $bootstrap $papaparse $base64 | resources.Concat "js/vendor.js" | resources.Minify | resources.Fingerprint }}
 <script src="{{ $vendor.Permalink }}" integrity="{{ $vendor.Data.Integrity }}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-4-autocomplete/dist/bootstrap-4-autocomplete.min.js" crossorigin="anonymous"></script>
+
 {{ $main := resources.Get "js/main.js" | resources.Minify | resources.Fingerprint }}
 <script src="{{ $main.Permalink }}" integrity="{{ $main.Data.Integrity }}"></script>
 </body>

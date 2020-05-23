@@ -6,6 +6,8 @@ disableKinds:
   - taxonomy
   - taxonomyTerm
 
+publishDir: "docs"
+
 module:
   mounts:
     - source: "static"
@@ -20,6 +22,10 @@ module:
       target: "assets/js/vendor/popper.js"
     - source: "node_modules/bootstrap/dist/js/bootstrap.js"
       target: "assets/js/vendor/bootstrap.js"
+    - source: "node_modules/papaparse/papaparse.min.js"
+      target: "assets/js/vendor/papaparse.js"
+    - source: "node_modules/js-base64/base64.min.js"
+      target: "assets/js/vendor/base64.js"
     - source: "node_modules/@fortawesome/fontawesome-free/scss"
       target: "assets/scss/vendor/fontawesome"
     - source: "node_modules/@fortawesome/fontawesome-free/webfonts"

@@ -1,0 +1,84 @@
+$primary-color: #456990ff;
+$secondary-color: #eeb868ff;
+$hightlight-green: #49beaaff;
+$hightlight-pale-green: #49dcb1ff;
+$hightlight-red: #ef767aff;
+
+.copy-link-button {
+	font-size: 1.5rem;
+}
+
+.back-to-top {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+	z-index: 20000;
+}
+
+.semitransparent-search-background {
+	background-color: transparentize($gray-100, 0.3);
+}
+
+/*CARD TYPE TEXT*/
+
+.language-card-type {
+	background: desaturate(lighten($primary-color, 25), 50);	
+}
+
+.language-card-type.Link {
+	background: $primary-color;	
+}
+
+.language-card-type.Video {
+	background: $hightlight-red;	
+}
+
+.language-card-type.Audio {
+	background: $secondary-color;	
+}
+
+.language-card-type.Image {
+	background: $hightlight-green;	
+}
+
+.language-card-type.Document {
+	background: $hightlight-pale-green;	
+}
+
+.language-card-type.Webpage {
+	background: $primary-color;	
+}
+
+/*BORDER COLOR FOR CARDS*/
+
+.language-card {
+	border-color: desaturate(lighten($primary-color, 25), 50);	
+}
+
+.language-card.Link {
+	border-color: $primary-color;	
+}
+
+.language-card.Video {
+	border-color: $hightlight-red;	
+}
+
+.language-card.Audio {
+	border-color: $secondary-color;	
+}
+
+.language-card.Image {
+	border-color: $hightlight-green;	
+}
+
+.language-card.Document {
+	border-color: $hightlight-pale-green;	
+}
+
+.language-card.Webpage {
+	border-color: $primary-color;	
+}
+
+
+
+

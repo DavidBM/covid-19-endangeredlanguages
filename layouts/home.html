@@ -1,18 +1,33 @@
 {{ define "main" }}
-<main>
+<a class="btn btn-primary back-to-top" href="/#top">Back To Top</a>
+<main class="bg-light" id="top">
 	<div class="container-xl">
-		<div class="row pt-10">
-			<div class="col-12 col-md-9 input-group mx-auto">
-				<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
+		<div class="row">
+			<div class="col-12 col-md-3">
+				<a class="navbar-brand" href="/">
+					<img class="d-block img-fluid" src="/images/ELP-Logo-Horiz.svg">
+				</a>
+			</div>
+			<div class="col-12 col-md-9 p-2 pt-4 font-weight-bold">
+				<p>If you have any public health information in additional languages, please contact <a href="mailto:anna@endangeredlanguages.com">anna@endangeredlanguages.com</a>! We will update this listing as more resources become available.</p>
+				<p>The information provided here is largely collected from governments, NGOs, and public health organizations. If you see misinformation in any of these links, <u>please</u> contact us.</p>
+				<p>You can use the search box bellow or hit ctrl+F to search by country or language name. THANK YOU to all who have contributed.</p>
+			</div>
+		</div>
+	</div>
+	<div class="container-xl pb-1 pb-md-6">
+	</div>
+	<div class="container-xl py-1 pt-md-3 pb-md-3 sticky-top semitransparent-search-background">
+		<div class="row">
+			<div class="col-12 col-md-9 input-group input-group-lg mx-auto py-2">
+				<input id="main-search" type="text" class="form-control" placeholder="Search by language name or country" aria-label="Search box for language name with advanced options">
 				<div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#search-options">More Options</button>
 					<button class="btn btn-outline-secondary" type="button">Search</button>
 				</div>
 			</div>
-			<div id="search-options" class="collapse col-11 col-lg-8 col-xl-5 input-group mx-auto">
-				Hola
-			</div>
 		</div>
+	</div>
+	<div class="container-xl pb-1 pb-md-6">
 	</div>
 	<div class="container-xl">
 		<div class="py-5 px-2">
@@ -23,7 +38,7 @@
 		{{ $global := newScratch }}
 		{{ $global.Set "langs" dict }}
 
-		{{/*This transform the CSV with many rows per language to a dict with an slice of rows for each language name as key. It is a bit hacky, but it works for now*/}}
+		{{/*This transform the CSV with many rows per language to a dict with an slice of rows for each language name as key. It is a bit hacky, but it works for now. The original CSV had the languages not ordered, that is why we weren't able to use it directly. Maybe it would be good to add a build step that transform the CSV to JSON and merges all the same languages item in one big array */}}
 
 		{{ range $i, $data := $csv }}
 			{{ if gt $i 0 }}
@@ -45,15 +60,34 @@
 
 
 		{{ range $langName, $langs := ($global.Get "langs") }}
-			<div class="row pb-2">
+			{{ $langid := trim $langName " " | base64Encode }}
+			<div class="row pt-7 lang-section" id="{{ $langid }}" data-lang-id="{{ $langid }}">
 				<div class="col-12">
-					<h1>{{ $langName }}</h1>
+					<a class="copy-link-button mr-3" href="/#{{ $langid }}">🔗</a>
+					<h1 class="language-english-name pr-3 d-inline"><u>{{ $langName }}</u></h1>
+					<h3 class="language-original d-inline pl-2"><u>{{ index (index $langs 0) 1 }}</u></h3>
+					<h4 class="language-original d-inline pl-3">{{ index (index $langs 0) 3 }} ></h4>
+					<h4 class="language-original d-inline pl-1">{{ index (index $langs 0) 2 }}</h4>
 				</div>
 				{{ range $i, $langdata := $langs }}
 					{{ if ne (len $langdata) 0 }}
-					<div class="card col-12 col-sm-6 col-md-4 col-lg-3">
-						<p>{{ index $langdata 4 }}</p>
-					</div>
+
+						{{ $type := index $langdata 6 | default "Link" }}
+						{{ $title := index $langdata 4 }}
+						{{ $link := index $langdata 5 }}
+
+						{{ $type := replace (replace $type "/poster" "") " " "" }}
+
+						<div class="p-2 col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+							<a class="card p-1 w-100 bg-white language-card {{ $type }}" href="{{ $link }}">
+								<div class="pb-2 text-truncate">
+									<p><span class="p-1 rounded text-decoration-none text-white language-card-type {{ $type }}">{{ $type }}</span></p>
+								</div>
+								<div class="p-1 font-weight-bold">
+									<p>{{ $title }}</p>
+								</div>
+							</a>
+						</div>
 					{{ end }}
 				{{ end }}
 			</div>
