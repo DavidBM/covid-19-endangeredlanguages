@@ -63,7 +63,7 @@
 			{{ $langid := trim $langName " " | base64Encode }}
 			<div class="row pt-7 lang-section" id="{{ $langid }}" data-lang-id="{{ $langid }}">
 				<div class="col-12">
-					<a class="copy-link-button mr-3" href="/#{{ $langid }}">🔗</a>
+					<a class="copy-link-button mr-3" href="#{{ $langid }}">🔗</a>
 					<h1 class="language-english-name pr-3 d-inline"><u>{{ $langName }}</u></h1>
 					<h3 class="language-original d-inline pl-2"><u>{{ index (index $langs 0) 1 }}</u></h3>
 					<h4 class="language-original d-inline pl-3">{{ index (index $langs 0) 3 }} ></h4>
