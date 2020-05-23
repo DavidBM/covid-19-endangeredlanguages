@@ -46,4 +46,12 @@
 			highlightClass: 'text-danger'
 		});
 	}
+
+	$("#main-search").click(function() {
+		if(window.innerWidth < 768 && (window.pageYOffset || document.documentElement.scrollTop) === 0) {
+			window.location.hash = "#search-box";
+		}
+	})
+
+
 })()
