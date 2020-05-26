@@ -22,6 +22,14 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+
+    - name: Install Dependencies
+      run: npm install
+
     - name: Build Hugo
       uses: lowply/build-hugo@v0.68.3
 
