@@ -16,7 +16,12 @@
         else {
             label = item.label;
         }
-        return '<button type="button" class="dropdown-item" data-value="' + item.value + '">' + label + '</button>';
+
+        if(typeof opts.buttonRenderer === "function") {
+            return opts.buttonRenderer(item.value, label, item.label, opts);
+        } else {
+            return '<button type="button" class="dropdown-item" data-value="' + item.value + '">' + label + '</button>';
+        }
     }
     function createItems(field, opts) {
         var lookup = field.val();
@@ -57,11 +62,12 @@
 
         // option action
         field.next().find('.dropdown-item').click(function () {
-            field.val($(this).text());
+            field.val($(this).data("selected-label") || $(this).text());
             if (opts.onSelectItem) {
                 opts.onSelectItem({
                     value: $(this).data('value'),
-                    label: $(this).text()
+                    label: $(this).text(),
+                    element: this,
                 }, field[0]);
             }
         });

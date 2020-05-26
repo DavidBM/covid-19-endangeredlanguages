@@ -6,6 +6,7 @@
 
 	var LANG_BLOCKS = {};
 	var TERMS = {};
+	var COUNTRIES = {};
 
 	$(".lang-section").each(function (item) {
 		LANG_BLOCKS[this.dataset.langId] = {element: this, data: null, id: this.dataset.langId}; 
@@ -23,7 +24,23 @@
 				var searchTerm = [langName, row.data[1].trim(), row.data[2].trim()]
 				.filter(function (item) { return !!item }).join(" | ");
 				
-				TERMS[searchTerm] = langId;
+				TERMS[searchTerm] = {id: langId, type: "lang"};
+
+				// We want to index too languages
+				row.data[2].split(",").forEach(function (country) {
+					country = country.trim().toLowerCase();
+					country = country.charAt(0).toUpperCase() + country.slice(1);
+
+					var countryId = Base64.encode(country);
+
+					TERMS[country] = {id: Base64.encode(country), type: "country"};
+
+					if(COUNTRIES[countryId]) {
+						COUNTRIES[countryId].push(langId);
+					} else {
+						COUNTRIES[countryId] = [langId];
+					}
+				})
 			}
 		},
 		complete: function() {
@@ -31,9 +48,61 @@
 		}
 	});
 
+	var typeMapping = {
+		lang: {text: "LANG", css: "background-red"},
+		country: {text: "COUNTRY", css: "background-green"},
+	}
+
+	function buttonRenderer (value, labelHTML, labelText, opt) {
+
+		var mapping = typeMapping[value.type];
+
+		return '<button type="button" class="dropdown-item" data-selected-label="' + labelText +'" data-value="' + value.id + '" data-type="' + value.type + '">' + 
+			'<span class="' + mapping.css + ' rounded px-1 mr-2 text-white">' + 
+				mapping.text + 
+			"</span>" +
+			labelHTML + 
+		'</button>';
+	}
+
+	function filterByLang (countryId) {
+		var idsToShow = COUNTRIES[countryId];
+
+		var languageBlocks = document.querySelectorAll(".lang-section");
+		languageBlocks.forEach(function (element) {
+			element.style.display = "none";
+		});
+
+		idsToShow.forEach(function (id) {
+			var element = document.getElementById(id);
+			if(!element) return;
+			element.style.display = "";
+		});
+
+		document.getElementById("languages-filtered-warning").classList.remove("d-none");
+	}
+
+	function resetLangsVisibility () {
+		var languageBlocks = document.querySelectorAll(".lang-section");
+		languageBlocks.forEach(function (element) {
+			element.style.display = "";
+		});
+
+		document.getElementById("languages-filtered-warning").classList.add("d-none");
+	}
+
 	function startAutocompleteSearch(terms) {
-		function onSelectItem(item, element) {
-			window.location.hash = "#" + item.value;
+		function onSelectItem(item, input) {
+			var type = $(item.element).data('type');
+
+			if(type === "country") {
+				filterByLang(item.value)
+			} else if (type === "lang") {
+				resetLangsVisibility();
+				window.location.hash = "#" + item.value;
+			}
+
+			$(':focus').blur();
 		}
 
 		var searchInput = $("#main-search");
@@ -46,7 +115,8 @@
 			highlightClass: 'text-danger',
 			dropdownOptions: {
 				flip: false,
-			}
+			},
+			buttonRenderer: buttonRenderer, 
 		});
 	
 		$("#search-button").click(function () {
@@ -58,6 +128,8 @@
 				}, 0)
 			}, 0);
 		})
+
+		$("#show-all-languages").click(resetLangsVisibility);
 	}
 
 	$("#main-search").click(function() {

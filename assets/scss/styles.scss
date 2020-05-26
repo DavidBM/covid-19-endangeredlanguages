@@ -19,6 +19,19 @@ $hightlight-red: #ef767aff;
 	background-color: transparentize($gray-100, 0.3);
 }
 
+.dropdown-item-type {
+	background: $primary-color;
+}
+
+.background-green {
+	background: $hightlight-green;
+}
+
+.background-red {
+	background: $hightlight-red;
+}
+
+
 /*CARD TYPE TEXT*/
 
 .language-card-type {
@@ -38,7 +51,7 @@ $hightlight-red: #ef767aff;
 }
 
 .language-card-type.Image {
-	background: $hightlight-green;	
+	background: $hightlight-green;
 }
 
 .language-card-type.Document {
