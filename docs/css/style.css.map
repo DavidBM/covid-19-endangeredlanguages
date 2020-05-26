@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "style.css",
-	"sourceRoot": "/home/david/repos/ONGs/covid-19-endangeredlanguages",
+	"sourceRoot": "/github/workspace",
 	"sources": [
 		"assets/scss/main.scss",
 		"assets/scss/custom_variables.scss",
