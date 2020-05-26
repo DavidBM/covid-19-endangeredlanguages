@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Build Hugo
-      uses: lowply/build-hugo@v0.70.0
+      uses: lowply/build-hugo@v0.68.3
 
     - name: Git Auto Commit
       uses: stefanzweifel/git-auto-commit-action@v4.3.0
